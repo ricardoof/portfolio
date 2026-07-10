@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 /* See the Tailwind configuration guide for advanced usage
    https://tailwindcss.com/docs/configuration */
 
@@ -89,6 +91,10 @@
   --border: 1.5px;
   --depth: 1;
   --noise: 0;
+}
+
+@theme {
+  --font-sans: "Inter", sans-serif;
 }
 
 /* Add variants based on LiveView classes */
