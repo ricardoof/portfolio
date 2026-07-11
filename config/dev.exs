@@ -48,12 +48,12 @@ config :portifolio, PortifolioWeb.Endpoint,
     web_console_logger: true,
     patterns: [
       # Static assets, except user uploads
-      ~r"priv/static/(?!uploads/).*\.(js|css|png|jpeg|jpg|gif|svg)$"E,
+      ~r"priv/static/(?!uploads/).*\.(js|css|png|jpeg|jpg|gif|svg)$",
       # Gettext translations
       ~r"priv/gettext/.*\.po$"E,
       # Router, Controllers, LiveViews and LiveComponents
       ~r"lib/portifolio_web/router\.ex$"E,
-      ~r"lib/portifolio_web/(controllers|live|components)/.*\.(ex|heex)$"E
+      ~r"lib/portifolio_web/(controllers|live|components)/.*\.(ex|heex)$"
     ]
   ]
 

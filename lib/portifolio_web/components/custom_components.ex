@@ -222,9 +222,12 @@ defmodule PortifolioWeb.CustomComponents do
     """
   end
 
+  @doc """
+  Renderiza o footer
+  """
   def footer(assigns) do
     ~H"""
-    <footer>
+    <footer class="m-8">
       <%= Date.utc_today().year %> © Ricardo Ferreira
     </footer>
     """
