@@ -50,9 +50,9 @@ config :portifolio, PortifolioWeb.Endpoint,
       # Static assets, except user uploads
       ~r"priv/static/(?!uploads/).*\.(js|css|png|jpeg|jpg|gif|svg)$",
       # Gettext translations
-      ~r"priv/gettext/.*\.po$"E,
+      ~r"priv/gettext/.*\.po$",
       # Router, Controllers, LiveViews and LiveComponents
-      ~r"lib/portifolio_web/router\.ex$"E,
+      ~r"lib/portifolio_web/router\.ex$",
       ~r"lib/portifolio_web/(controllers|live|components)/.*\.(ex|heex)$"
     ]
   ]
