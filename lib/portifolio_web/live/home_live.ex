@@ -1,9 +1,335 @@
 defmodule PortifolioWeb.HomeLive do
   use PortifolioWeb, :live_view
 
-  alias Portifolio.Projects
+  import PortifolioWeb.CoreComponents
 
+  alias Portifolio.Projects
+  alias Phoenix.LiveView.JS
+  alias PortifolioWeb.Layouts
+
+  @doc"""
+  Prepara a home com os projetos.
+  """
   def mount(_params, _session, socket) do
     {:ok, assign(socket, projects: Projects.list_projects())}
+  end
+
+  @doc """
+  Renderiza o header para mobile e desktop
+  """
+  def header(assigns) do
+    ~H"""
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-base-100">
+      <nav class="flex items-center justify-between md:grid md:grid-cols-3 p-4 max-w-7xl mx-auto">
+        <!-- 1. Fatia da Esquerda (Logo/Nome) -->
+        <div class="font-bold text-2xl text-white-800 md:justify-self-start">
+          Ricardo Ferreira
+        </div>
+
+        <!-- 2. Fatia do Centro (Menu) -->
+        <ul class="hidden gap-8 font-medium border border-primary rounded-full py-2 px-4 md:justify-self-center md:flex">
+          <li><a href="#about" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Sobre</a></li>
+          <li><a href="#projects" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Projetos</a></li>
+          <li><a href="#research" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Pesquisa</a></li>
+          <li><a href="#technologies" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Tecnologias</a></li>
+          <li><a href="#certificates" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Certificados</a></li>
+          <li><a href="#contacts" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Contatos</a></li>
+        </ul>
+
+        <!-- 3. Fatia da Direita (Dark Mode + Sanduíche) -->
+        <div class="flex items-center gap-4 md:justify-self-end">
+          <Layouts.theme_toggle />
+
+          <button
+            phx-click={JS.toggle(to: "#mobile-menu")}
+            class="md:hidden block text-gray focus:outline-none"
+            aria-label="Abrir menu"
+          >
+            <.icon name="hero-bars-3" class="w-8 h-8" />
+          </button>
+        </div>
+      </nav>
+
+      <!-- Menu Mobile -->
+      <div
+        id="mobile-menu"
+        class="hidden absolute top-full left-0 w-full md:hidden bg-neutral border-gray-200 shadow-lg"
+      >
+        <ul class="flex flex-col p-4 gap-8 text-center font-medium">
+          <li><a href="#about" class="block">Sobre</a></li>
+          <li><a href="#projects" class="block">Projetos</a></li>
+          <li><a href="#research" class="block">Pesquisa</a></li>
+          <li><a href="#technologies" class="block">Tecnologias</a></li>
+          <li><a href="#certificates" class="block">Certificados</a></li>
+          <li><a href="#contacts" class="block">Contatos</a></li>
+        </ul>
+      </div>
+    </header>
+    """
+  end
+
+  @doc """
+  Renderiza a seção "Sobre"
+  """
+  def about(assigns) do
+    ~H"""
+    <section class="grid grid-cols-1 gap-4 p-4 m-8 text-xl items-center justify-center md:grid-cols-2 md:min-h-[80vh]" id="about">
+      <div class="flex items-center justify-center mx-auto w-48 h-48 md:w-96 md:h-96">
+        <img
+          src="https://github.com/ricardoof.png"
+          alt="Foto de Ricardo Ferreira"
+          class="rounded-full w-full h-full object-cover"
+        />
+      </div>
+
+      <div class="flex flex-col gap-4 text-center md:text-left">
+        <h1 class="text-4xl">Olá, meu nome é Ricardo Ferreira</h1>
+
+        <p>Sou estudante de Ciência da Computação na UFV (8º período) e Desenvolvedor Full Stack, apaixonado por criar softwares eficientes e escaláveis.
+        Atualmente, meu grande foco é o ecossistema funcional, utilizando a linguagem de programação funcional <strong>Elixir</strong> e o framework <strong>Phoenix</strong> para escalabilidade e concorrência.</p>
+      </div>
+    </section>
+    """
+  end
+
+  @doc """
+  Renderiza um projeto.
+  """
+  def projects(assigns) do
+    ~H"""
+    <section
+      class="flex flex-col gap-4 items-center md:m-8 md:my-16"
+      id="projects"
+    >
+      <h2 class="text-4xl">
+        Projetos
+      </h2>
+
+      <div class="grid grid-cols-1 gap-8 p-4 md:grid-cols-3 md:m-8">
+        <div
+          class={["", index >= 3 && "hidden more-projects"]}
+          :for={{project, index} <- Enum.with_index(@projects)}
+        >
+          <div class="flex flex-col h-full gap-4 p-4 rounded-lg shadow-lg hover:scale-105 transition dark:border">
+            <img
+              src={project.image}
+              alt={project.title}
+              class="rounded-lg"
+            />
+
+            <h3 class="text-2xl"><%= project.title %></h3>
+
+            <p class="text-sm flex-grow"><%= project.description %></p>
+
+            <div class="flex flex-row gap-4 m-2 mt-auto">
+              <.link :if={project[:link_deploy] not in [nil, ""]} href={project.link_deploy} target="_blank">
+                <.icon name="hero-computer-desktop" class="w-8 h-8" />
+              </.link>
+
+              <.link href={project.link_github} target="_blank" alt="GitHub">
+                <.github_icon class="w-8 h-8" />
+              </.link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%= if length(@projects) > 3 do %>
+        <div>
+          <button
+            id="show-more-btn"
+            phx-click={JS.remove_class("hidden", to: ".more-projects") |> JS.hide()}
+            class="btn btn-outline btn-wide rounded-full"
+          >
+            Mostrar mais
+          </button>
+        </div>
+      <% end %>
+    </section>
+    """
+  end
+
+  @doc """
+  Renderiza a seção de pesquisa.
+  """
+  def research(assigns) do
+    ~H"""
+      <section
+        class="flex flex-col items-center gap-8 p-4 md:my-16"
+        id="research"
+      >
+        <h2 class="text-4xl">Pesquisa</h2>
+
+        <div class="flex flex-col gap-4 p-4 rounded-lg shadow-lg hover:scale-105 transition dark:border">
+          <h3 class="text-2xl">Iniciação científica</h3>
+
+          <p class="text-sm">Iniciação científica utilizando a linguagem funcional Elixir e o framework Phoenix.</p>
+        </div>
+      </section>
+    """
+  end
+
+  @doc """
+  Renderiza as tecnologias
+  """
+  def technologies(assigns) do
+    ~H"""
+    <section
+      class="flex flex-col items-center gap-12 p-4 md:my-16"
+      id="technologies"
+    >
+      <h2 class="text-4xl">Tecnologias</h2>
+
+      <ul class="flex flex-wrap justify-center items-center gap-6" aria-label="Lista de tecnologias que utilizo">
+        <li class="h-12 w-12">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/phoenix/phoenix-original.svg" class="w-full h-full object-contain" alt="Phoenix" />
+        </li>
+        <li class="h-12 w-12">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/elixir/elixir-original.svg" class="w-full h-full object-contain" alt="Elixir" />
+        </li>
+        <li class="h-12 w-12">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" class="w-full h-full object-contain" alt="React"/>
+        </li>
+        <li class="h-12 w-12">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" class="w-full h-full object-contain" alt="JavaScript"/>
+          </li>
+        <li class="h-12 w-12">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" class="w-full h-full object-contain" alt="Tailwind CSS"/>
+        </li>
+        <li class="h-12 w-12">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" class="w-full h-full object-contain" alt="HTML5"/>
+        </li>
+        <li class="h-12 w-12">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/playwright/playwright-original.svg" class="w-full h-full object-contain" alt="Playwright"/>
+        </li>
+        <li class="h-12 w-12">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/k6/k6-original.svg" />
+        </li>
+      </ul>
+    </section>
+    """
+  end
+
+  @doc """
+  Renderiza os contatos
+  """
+  def contacts(assigns) do
+    ~H"""
+    <section
+      class="flex flex-col items-center gap-12 p-4"
+      id="contacts"
+    >
+      <h2 class="text-4xl">Contatos</h2>
+
+      <ul class="flex flex-row items-center gap-6">
+        <li class="w-8 h-8">
+          <.link href="https://www.linkedin.com/in/ricardoof/" target="_blank" alt="LinkedIn">
+           <.linkedin_icon class="h-full w-full" />
+          </.link>
+        </li>
+
+        <li class="w-8 h-8">
+          <.link href="mailto:ricardoferreira4496@gmail.com" target="_blank" alt="Email">
+            <.icon name="hero-envelope" class="h-full w-full" />
+          </.link>
+        </li>
+
+        <li class="w-8 h-8">
+          <.link href="https://github.com/ricardoof" target="_blank" alt="GitHub">
+            <.github_icon class="h-full w-full" />
+          </.link>
+        </li>
+
+        <li class="w-8 h-8">
+          <.link href="https://x.com/rricardoof" target="_blank" alt="Twitter">
+            <.twitter_icon class="h-full w-full" />
+          </.link>
+        </li>
+
+        <li class="w-8 h-8">
+          <.link href="https://www.instagram.com/rricardoferreiraa" target="_blank" alt="Instagram">
+            <.instagram_icon class="h-full w-full" />
+          </.link>
+        </li>
+
+        <li class="w-8 h-8">
+          <.link href="https://bsky.app/profile/ricardoof.bsky.social" target="_blank" alt="Bluesky">
+            <.bluesky_icon class="h-full w-full" />
+          </.link>
+        </li>
+      </ul>
+    </section>
+    """
+  end
+
+  defp linkedin_icon(assigns) do
+    ~H"""
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 448 512"
+      class={["fill-current", assigns[:class]]}
+    >
+      <path d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/>
+    </svg>
+    """
+  end
+
+  defp instagram_icon(assigns) do
+    ~H"""
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 448 512"
+      class={["fill-current", assigns[:class]]}
+    >
+      <path d="M224.3 141a115 115 0 1 0 -.6 230 115 115 0 1 0 .6-230zm-.6 40.4a74.6 74.6 0 1 1 .6 149.2 74.6 74.6 0 1 1 -.6-149.2zm93.4-45.1a26.8 26.8 0 1 1 53.6 0 26.8 26.8 0 1 1 -53.6 0zm129.7 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM399 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+    </svg>
+    """
+  end
+
+  defp twitter_icon(assigns) do
+    ~H"""
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 448 512"
+      class={["fill-current", assigns[:class]]}
+    >
+      <path d="M357.2 48L427.8 48 273.6 224.2 455 464 313 464 201.7 318.6 74.5 464 3.8 464 168.7 275.5-5.2 48 140.4 48 240.9 180.9 357.2 48zM332.4 421.8l39.1 0-252.4-333.8-42 0 255.3 333.8z"/>
+    </svg>
+    """
+  end
+
+  defp bluesky_icon(assigns) do
+    ~H"""
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 576 512"
+      class={["fill-current", assigns[:class]]}
+    >
+      <path d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/>
+    </svg>
+    """
+  end
+
+  defp github_icon(assigns) do
+    ~H"""
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+      class={["fill-current", assigns[:class]]}
+    >
+      <path d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5l0 52C323 491.5 335.5 500 350.5 494 441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5l0-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21z"/>
+    </svg>
+    """
+  end
+
+  @doc """
+  Renderiza o footer
+  """
+  def footer(assigns) do
+    ~H"""
+    <footer class="">
+      <%= Date.utc_today().year %> Ricardo Ferreira
+    </footer>
+    """
   end
 end

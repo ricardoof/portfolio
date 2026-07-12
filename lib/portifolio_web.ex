@@ -86,7 +86,6 @@ defmodule PortifolioWeb do
       import Phoenix.HTML
       # Core UI components
       import PortifolioWeb.CoreComponents
-      import PortifolioWeb.CustomComponents
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS

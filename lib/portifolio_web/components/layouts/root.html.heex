@@ -17,9 +17,9 @@
           document.documentElement.setAttribute("data-theme", theme);
         };
         if (!document.documentElement.hasAttribute("data-theme")) {
-          setTheme(localStorage.getItem("phx:theme") || "light");
+          setTheme(localStorage.getItem("phx:theme") || "halloween");
         }
-        window.addEventListener("storage", (e) => e.key === "phx:theme" && setTheme(e.newValue || "light"));
+        window.addEventListener("storage", (e) => e.key === "phx:theme" && setTheme(e.newValue || "halloween"));
 
         window.addEventListener("phx:set-theme", (e) => setTheme(e.target.dataset.phxTheme));
       })();
