@@ -11,7 +11,11 @@ defmodule PortifolioWeb.HomeLive do
   Prepara a home com os projetos.
   """
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, projects: Projects.list_projects())}
+    {:ok, assign(socket,
+      projects: Projects.list_projects(),
+      technologies: Portifolio.Technologies.list_technologies(),
+      certificates: Portifolio.Certificates.list_certificates())
+    }
   end
 
   @doc """
@@ -19,7 +23,7 @@ defmodule PortifolioWeb.HomeLive do
   """
   def header(assigns) do
     ~H"""
-    <header class="sticky top-0 z-50 backdrop-blur-md bg-base-100">
+    <header class="sticky top-0 z-50 left-0 right-0 bg-base-100">
       <nav class="flex items-center justify-between md:grid md:grid-cols-3 p-4 max-w-7xl mx-auto">
         <!-- 1. Fatia da Esquerda (Logo/Nome) -->
         <div class="font-bold text-2xl text-white-800 md:justify-self-start">
@@ -86,7 +90,7 @@ defmodule PortifolioWeb.HomeLive do
         <h1 class="text-4xl">Olá, meu nome é Ricardo Ferreira</h1>
 
         <p>Sou estudante de Ciência da Computação na UFV (8º período) e Desenvolvedor Full Stack, apaixonado por criar softwares eficientes e escaláveis.
-        Atualmente, meu grande foco é o ecossistema funcional, utilizando a linguagem de programação funcional <strong>Elixir</strong> e o framework <strong>Phoenix</strong> para escalabilidade e concorrência.</p>
+        Atualmente, meu grande foco é o ecossistema funcional, utilizando a linguagem de programação funcional <span class="text-primary">Elixir</span> e o framework <span class="text-primary">Phoenix</span> para escalabilidade e concorrência.</p>
       </div>
     </section>
     """
@@ -101,16 +105,14 @@ defmodule PortifolioWeb.HomeLive do
       class="flex flex-col gap-4 items-center md:m-8 md:my-16"
       id="projects"
     >
-      <h2 class="text-4xl">
-        Projetos
-      </h2>
+      <h2 class="text-4xl">Projetos</h2>
 
       <div class="grid grid-cols-1 gap-8 p-4 md:grid-cols-3 md:m-8">
         <div
-          class={["", index >= 3 && "hidden more-projects"]}
+          class={[index >= 3 && "hidden more-projects"]}
           :for={{project, index} <- Enum.with_index(@projects)}
         >
-          <div class="flex flex-col h-full gap-4 p-4 rounded-lg shadow-lg hover:scale-105 transition dark:border">
+          <div class="flex flex-col h-full gap-4 p-4 rounded-lg shadow-lg hover:scale-105 transition border border-transparent dark:border-primary">
             <img
               src={project.image}
               alt={project.title}
@@ -139,7 +141,7 @@ defmodule PortifolioWeb.HomeLive do
           <button
             id="show-more-btn"
             phx-click={JS.remove_class("hidden", to: ".more-projects") |> JS.hide()}
-            class="btn btn-outline btn-wide rounded-full"
+            class="btn btn-outline btn-primary rounded-full"
           >
             Mostrar mais
           </button>
@@ -160,7 +162,7 @@ defmodule PortifolioWeb.HomeLive do
       >
         <h2 class="text-4xl">Pesquisa</h2>
 
-        <div class="flex flex-col gap-4 p-4 rounded-lg shadow-lg hover:scale-105 transition dark:border">
+        <div class="flex flex-col gap-4 p-4 rounded-lg shadow-lg hover:scale-105 transition border border-transparent dark:border-primary">
           <h3 class="text-2xl">Iniciação científica</h3>
 
           <p class="text-sm">Iniciação científica utilizando a linguagem funcional Elixir e o framework Phoenix.</p>
@@ -180,30 +182,28 @@ defmodule PortifolioWeb.HomeLive do
     >
       <h2 class="text-4xl">Tecnologias</h2>
 
-      <ul class="flex flex-wrap justify-center items-center gap-6" aria-label="Lista de tecnologias que utilizo">
-        <li class="h-12 w-12">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/phoenix/phoenix-original.svg" class="w-full h-full object-contain" alt="Phoenix" />
+      <ul
+        class="flex flex-wrap justify-center items-center gap-6"
+        aria-label="Lista de tecnologias que utilizo"
+      >
+        <li class="h-12 w-12" :for={technology <- @technologies}>
+          <img src={technology.image} class="w-full h-full object-contain" alt={technology.alt} />
         </li>
-        <li class="h-12 w-12">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/elixir/elixir-original.svg" class="w-full h-full object-contain" alt="Elixir" />
-        </li>
-        <li class="h-12 w-12">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" class="w-full h-full object-contain" alt="React"/>
-        </li>
-        <li class="h-12 w-12">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" class="w-full h-full object-contain" alt="JavaScript"/>
-          </li>
-        <li class="h-12 w-12">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" class="w-full h-full object-contain" alt="Tailwind CSS"/>
-        </li>
-        <li class="h-12 w-12">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" class="w-full h-full object-contain" alt="HTML5"/>
-        </li>
-        <li class="h-12 w-12">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/playwright/playwright-original.svg" class="w-full h-full object-contain" alt="Playwright"/>
-        </li>
-        <li class="h-12 w-12">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/k6/k6-original.svg" />
+      </ul>
+    </section>
+    """
+  end
+
+  def certificates(assigns) do
+    ~H"""
+    <section class="flex flex-col items-center gap-12 p-4 md:my-16" id="certificates">
+      <h2 class="text-4xl">Certificados</h2>
+
+      <ul aria-label="Lista de certificados que obtive">
+        <li class="text-sm hover:text-primary" :for={certificate <- @certificates}>
+          <.link href={certificate.link} target="_blank" alt={certificate.alt}>
+            {certificate.name}
+          </.link>
         </li>
       </ul>
     </section>
@@ -222,37 +222,37 @@ defmodule PortifolioWeb.HomeLive do
       <h2 class="text-4xl">Contatos</h2>
 
       <ul class="flex flex-row items-center gap-6">
-        <li class="w-8 h-8">
+        <li class="w-8 h-8 hover:text-primary">
           <.link href="https://www.linkedin.com/in/ricardoof/" target="_blank" alt="LinkedIn">
            <.linkedin_icon class="h-full w-full" />
           </.link>
         </li>
 
-        <li class="w-8 h-8">
+        <li class="w-8 h-8 hover:text-primary">
           <.link href="mailto:ricardoferreira4496@gmail.com" target="_blank" alt="Email">
             <.icon name="hero-envelope" class="h-full w-full" />
           </.link>
         </li>
 
-        <li class="w-8 h-8">
+        <li class="w-8 h-8 hover:text-primary">
           <.link href="https://github.com/ricardoof" target="_blank" alt="GitHub">
             <.github_icon class="h-full w-full" />
           </.link>
         </li>
 
-        <li class="w-8 h-8">
+        <li class="w-8 h-8 hover:text-primary">
           <.link href="https://x.com/rricardoof" target="_blank" alt="Twitter">
             <.twitter_icon class="h-full w-full" />
           </.link>
         </li>
 
-        <li class="w-8 h-8">
+        <li class="w-8 h-8 hover:text-primary">
           <.link href="https://www.instagram.com/rricardoferreiraa" target="_blank" alt="Instagram">
             <.instagram_icon class="h-full w-full" />
           </.link>
         </li>
 
-        <li class="w-8 h-8">
+        <li class="w-8 h-8 hover:text-primary">
           <.link href="https://bsky.app/profile/ricardoof.bsky.social" target="_blank" alt="Bluesky">
             <.bluesky_icon class="h-full w-full" />
           </.link>
