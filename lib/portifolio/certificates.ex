@@ -3,7 +3,7 @@ defmodule Portifolio.Certificates do
   def list_certificates do
     [
       %{
-        name: "Elixir parte 1",
+        name: "Elixir - Universidade Federal de Viçosa (UFV)",
         link: "https://drive.google.com/file/d/1_XQaf7x7nuZmO3r3W-HIG-mbagkHamez/view?usp=sharing",
         alt: "Elixir"
       },

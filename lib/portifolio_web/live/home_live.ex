@@ -3,7 +3,7 @@ defmodule PortifolioWeb.HomeLive do
 
   import PortifolioWeb.CoreComponents
 
-  alias Portifolio.Projects
+  alias Portifolio.{Projects, Technologies, Experiences, Certificates}
   alias Phoenix.LiveView.JS
   alias PortifolioWeb.Layouts
 
@@ -13,8 +13,9 @@ defmodule PortifolioWeb.HomeLive do
   def mount(_params, _session, socket) do
     {:ok, assign(socket,
       projects: Projects.list_projects(),
-      technologies: Portifolio.Technologies.list_technologies(),
-      certificates: Portifolio.Certificates.list_certificates())
+      technologies: Technologies.list_technologies(),
+      experiences: Experiences.list_experiences(),
+      certificates: Certificates.list_certificates())
     }
   end
 
@@ -23,7 +24,7 @@ defmodule PortifolioWeb.HomeLive do
   """
   def header(assigns) do
     ~H"""
-    <header class="sticky top-0 z-50 left-0 right-0 bg-base-100">
+    <header class="sticky top-0 z-50 bg-base-100">
       <nav class="flex items-center justify-between md:grid md:grid-cols-3 p-4 max-w-7xl mx-auto">
         <!-- 1. Fatia da Esquerda (Logo/Nome) -->
         <div class="font-bold text-2xl text-white-800 md:justify-self-start">
@@ -36,6 +37,7 @@ defmodule PortifolioWeb.HomeLive do
           <li><a href="#projects" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Projetos</a></li>
           <li><a href="#research" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Pesquisa</a></li>
           <li><a href="#technologies" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Tecnologias</a></li>
+          <li><a href="#experiences" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Experiências</a></li>
           <li><a href="#certificates" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Certificados</a></li>
           <li><a href="#contacts" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Contatos</a></li>
         </ul>
@@ -64,6 +66,7 @@ defmodule PortifolioWeb.HomeLive do
           <li><a href="#projects" class="block">Projetos</a></li>
           <li><a href="#research" class="block">Pesquisa</a></li>
           <li><a href="#technologies" class="block">Tecnologias</a></li>
+          <li><a href="#experiences" class="block">Experiências</a></li>
           <li><a href="#certificates" class="block">Certificados</a></li>
           <li><a href="#contacts" class="block">Contatos</a></li>
         </ul>
@@ -123,12 +126,21 @@ defmodule PortifolioWeb.HomeLive do
 
             <p class="text-sm flex-grow"><%= project.description %></p>
 
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span
+                :for={tech <- project[:technologies] || []}
+                class="badge badge-primary badge-sm"
+              >
+                <%= tech %>
+              </span>
+            </div>
+
             <div class="flex flex-row gap-4 m-2 mt-auto">
-              <.link :if={project[:link_deploy] not in [nil, ""]} href={project.link_deploy} target="_blank">
+              <.link :if={project[:link_deploy] not in [nil, ""]} href={project.link_deploy} target="_blank" aria-label="Acessar Deploy">
                 <.icon name="hero-computer-desktop" class="w-8 h-8" />
               </.link>
 
-              <.link href={project.link_github} target="_blank" alt="GitHub">
+              <.link href={project.link_github} target="_blank" aria-label="Acessar código no GitHub">
                 <.github_icon class="w-8 h-8" />
               </.link>
             </div>
@@ -194,6 +206,65 @@ defmodule PortifolioWeb.HomeLive do
     """
   end
 
+  @doc """
+  Renderiza as minhas experiências profissionais.
+  """
+  def experiences(assigns) do
+    ~H"""
+    <section class="flex flex-col gap-8 items-center md:m-8 md:my-16" id="experience">
+      <h2 class="text-4xl">Experiências</h2>
+
+      <div class="w-full max-w-3xl p-4">
+        <!-- 1. A classe timeline-compact agora está sem o max-md: -->
+        <ul class="timeline timeline-snap-icon timeline-compact timeline-vertical">
+          <li :for={{experience, index} <- Enum.with_index(@experiences)}>
+            <hr :if={index > 0} />
+
+            <!-- Ícone do meio -->
+            <div class="timeline-middle text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+              </svg>
+            </div>
+
+            <!-- 2. Todo o conteúdo foi movido para o timeline-end (Lado Direito) -->
+            <div class="timeline-end mb-10 ml-4 md:ml-6">
+              <!-- Data colocada no topo do bloco, com um block para quebrar a linha -->
+              <time class="font-mono text-sm text-gray-500 mb-1 block">
+                <%= experience.period %>
+              </time>
+
+              <h3 class="text-xl font-bold"><%= experience.role %></h3>
+
+              <h4 class="text-lg font-medium text-gray-600 dark:text-gray-300 mb-3">
+                <%= experience.company %>
+              </h4>
+
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                <%= experience.description %>
+              </p>
+
+              <div class="flex flex-wrap gap-2">
+                <span
+                  :for={tech <- experience[:technologies] || []}
+                  class="badge badge-outline badge-primary badge-sm"
+                >
+                  <%= tech %>
+                </span>
+              </div>
+            </div>
+
+            <hr :if={index < length(@experiences) - 1} />
+          </li>
+        </ul>
+      </div>
+    </section>
+    """
+  end
+
+  @doc """
+  Renderiza meus certificados
+  """
   def certificates(assigns) do
     ~H"""
     <section class="flex flex-col items-center gap-12 p-4 md:my-16" id="certificates">
@@ -327,7 +398,7 @@ defmodule PortifolioWeb.HomeLive do
   """
   def footer(assigns) do
     ~H"""
-    <footer class="">
+    <footer>
       <%= Date.utc_today().year %> Ricardo Ferreira
     </footer>
     """
