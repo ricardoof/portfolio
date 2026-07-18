@@ -24,53 +24,58 @@ defmodule PortifolioWeb.HomeLive do
   """
   def header(assigns) do
     ~H"""
+    <!-- Adicionado backdrop-blur e transparência no bg, além de uma borda inferior sutil -->
     <header class="sticky top-0 z-50 bg-base-100">
       <nav class="flex items-center justify-between md:grid md:grid-cols-3 p-4 max-w-7xl mx-auto">
+
         <!-- 1. Fatia da Esquerda (Logo/Nome) -->
-        <div class="font-bold text-2xl text-white-800 md:justify-self-start">
+        <div class="font-bold text-2xl text-base-content md:justify-self-start">
           Ricardo Ferreira
         </div>
 
-        <!-- 2. Fatia do Centro (Menu) -->
-        <ul class="hidden gap-8 font-medium border border-primary rounded-full py-2 px-4 md:justify-self-center md:flex">
-          <li><a href="#about" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Sobre</a></li>
-          <li><a href="#projects" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Projetos</a></li>
-          <li><a href="#research" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Pesquisa</a></li>
-          <li><a href="#technologies" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Tecnologias</a></li>
-          <li><a href="#experiences" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Experiências</a></li>
-          <li><a href="#certificates" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Certificados</a></li>
-          <li><a href="#contacts" phx-click={JS.hide(to: "#mobile-menu")} class="hover:text-primary transition">Contatos</a></li>
+        <!-- 2. Fatia do Centro (Menu Desktop) -->
+        <!-- Removida a borda primária (border border-primary rounded-full py-2 px-4) para um visual mais limpo -->
+        <ul class="hidden gap-8 font-medium border border-primary/50 rounded-full py-2 px-6 md:justify-self-center md:flex">
+          <li><a href="#about" class="hover:text-primary transition-colors duration-200">Sobre</a></li>
+          <li><a href="#projects" class="hover:text-primary transition-colors duration-200">Projetos</a></li>
+          <li><a href="#research" class="hover:text-primary transition-colors duration-200">Pesquisa</a></li>
+          <li><a href="#technologies" class="hover:text-primary transition-colors duration-200">Tecnologias</a></li>
+          <li><a href="#experiences" class="hover:text-primary transition-colors duration-200">Experiências</a></li>
+          <li><a href="#certificates" class="hover:text-primary transition-colors duration-200">Certificados</a></li>
+          <li><a href="#contacts" class="hover:text-primary transition-colors duration-200">Contatos</a></li>
         </ul>
 
-        <!-- 3. Fatia da Direita (Dark Mode + Sanduíche) -->
-        <div class="flex items-center gap-4 md:justify-self-end">
+        <!-- 3. Fatia da Direita (Dark Mode + Sanduíche via Dropdown) -->
+        <div class="flex items-center gap-2 md:justify-self-end">
           <Layouts.theme_toggle />
 
-          <button
-            phx-click={JS.toggle(to: "#mobile-menu")}
-            class="md:hidden block text-gray focus:outline-none"
-            aria-label="Abrir menu"
-          >
-            <.icon name="hero-bars-3" class="w-8 h-8" />
-          </button>
+          <div class="dropdown dropdown-end md:hidden">
+            <div
+              tabindex="0"
+              role="button"
+              class="btn btn-ghost btn-circle focus:outline-none"
+              aria-label="Abrir menu"
+            >
+              <.icon name="hero-bars-3" class="w-8 h-8" />
+            </div>
+
+            <!-- Menu Mobile (Caixa Flutuante) -->
+            <!-- Adicionado border/ring sutil para destacar do fundo escuro -->
+            <ul
+              tabindex="0"
+              class="menu dropdown-content mt-3 z-[1] p-4 shadow-2xl bg-base-200 rounded-box w-72 text-lg font-medium gap-2 border border-base-300"
+            >
+              <li><a href="#about" onclick="this.blur()" class="hover:text-primary py-3">Sobre</a></li>
+              <li><a href="#projects" onclick="this.blur()" class="hover:text-primary py-3">Projetos</a></li>
+              <li><a href="#research" onclick="this.blur()" class="hover:text-primary py-3">Pesquisa</a></li>
+              <li><a href="#technologies" onclick="this.blur()" class="hover:text-primary py-3">Tecnologias</a></li>
+              <li><a href="#experiences" onclick="this.blur()" class="hover:text-primary py-3">Experiências</a></li>
+              <li><a href="#certificates" onclick="this.blur()" class="hover:text-primary py-3">Certificados</a></li>
+              <li><a href="#contacts" onclick="this.blur()" class="hover:text-primary py-3">Contatos</a></li>
+            </ul>
+          </div>
         </div>
       </nav>
-
-      <!-- Menu Mobile -->
-      <div
-        id="mobile-menu"
-        class="hidden absolute top-full left-0 w-full md:hidden bg-neutral border-gray-200 shadow-lg"
-      >
-        <ul class="flex flex-col p-4 gap-8 text-center font-medium">
-          <li><a href="#about" class="block">Sobre</a></li>
-          <li><a href="#projects" class="block">Projetos</a></li>
-          <li><a href="#research" class="block">Pesquisa</a></li>
-          <li><a href="#technologies" class="block">Tecnologias</a></li>
-          <li><a href="#experiences" class="block">Experiências</a></li>
-          <li><a href="#certificates" class="block">Certificados</a></li>
-          <li><a href="#contacts" class="block">Contatos</a></li>
-        </ul>
-      </div>
     </header>
     """
   end
@@ -81,26 +86,30 @@ defmodule PortifolioWeb.HomeLive do
   def about(assigns) do
     ~H"""
     <section class="grid grid-cols-1 gap-4 p-4 m-8 text-xl items-center justify-center md:grid-cols-2 md:min-h-[80vh]" id="about">
-      <div class="flex items-center justify-center mx-auto w-48 h-48 md:w-96 md:h-96">
-        <img
-          src="https://github.com/ricardoof.png"
-          alt="Foto de Ricardo Ferreira"
-          class="rounded-full w-full h-full object-cover"
-        />
+      <div class="flex items-center justify-center mx-auto">
+        <div class="avatar">
+          <div class="w-48 md:w-80 rounded-full">
+            <img
+              src="https://github.com/ricardoof.png"
+              alt="Foto de Ricardo Ferreira"
+            />
+          </div>
+        </div>
       </div>
 
       <div class="flex flex-col gap-4 text-center md:text-left">
-        <h1 class="text-4xl">Olá, meu nome é Ricardo Ferreira</h1>
+        <h1 class="text-4xl font-bold">Olá, meu nome é Ricardo Ferreira</h1>
 
         <p>Sou estudante de Ciência da Computação na UFV (8º período) e Desenvolvedor Full Stack, apaixonado por criar softwares eficientes e escaláveis.
-        Atualmente, meu grande foco é o ecossistema funcional, utilizando a linguagem de programação funcional <span class="text-primary">Elixir</span> e o framework <span class="text-primary">Phoenix</span> para escalabilidade e concorrência.</p>
+        Atualmente, meu grande foco é o ecossistema funcional, utilizando a linguagem de programação funcional <span class="text-primary font-semibold">Elixir</span>
+        e o framework <span class="text-primary font-semibold">Phoenix</span> para escalabilidade e concorrência.</p>
       </div>
     </section>
     """
   end
 
   @doc """
-  Renderiza um projeto.
+  Renderiza meus projetos.
   """
   def projects(assigns) do
     ~H"""
@@ -108,40 +117,47 @@ defmodule PortifolioWeb.HomeLive do
       class="flex flex-col gap-4 items-center md:m-8 md:my-16"
       id="projects"
     >
-      <h2 class="text-4xl">Projetos</h2>
+      <h2 class="text-4xl font-bold mb-8">Projetos</h2>
 
-      <div class="grid grid-cols-1 gap-8 p-4 md:grid-cols-3 md:m-8">
+      <div class="grid grid-cols-1 gap-8 p-4 md:grid-cols-3 md:m-8 w-full max-w-7xl">
         <div
-          class={[index >= 3 && "hidden more-projects"]}
+          class={[
+            "card bg-base-100 shadow-xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-base-200 dark:border-primary/30",
+            index >= 3 && "hidden more-projects"
+          ]}
           :for={{project, index} <- Enum.with_index(@projects)}
         >
-          <div class="flex flex-col h-full gap-4 p-4 rounded-lg shadow-lg hover:scale-105 transition border border-transparent dark:border-primary">
+          <figure>
             <img
               src={project.image}
               alt={project.title}
-              class="rounded-lg"
+              class="w-full aspect-video object-cover object-top border-b border-base-200 dark:border-primary/20"
             />
+          </figure>
 
-            <h3 class="text-2xl"><%= project.title %></h3>
+          <div class="card-body p-6 flex flex-col gap-4">
+            <h3 class="card-title text-2xl"><%= project.title %></h3>
 
-            <p class="text-sm flex-grow"><%= project.description %></p>
+            <p class="text-sm text-base-content/80 flex-grow leading-relaxed">
+              <%= project.description %>
+            </p>
 
             <div class="flex flex-wrap gap-2 mt-2">
               <span
                 :for={tech <- project[:technologies] || []}
-                class="badge badge-primary badge-sm"
+                class="badge badge-primary badge-sm font-semibold"
               >
                 <%= tech %>
               </span>
             </div>
 
-            <div class="flex flex-row gap-4 m-2 mt-auto">
-              <.link :if={project[:link_deploy] not in [nil, ""]} href={project.link_deploy} target="_blank" aria-label="Acessar Deploy">
-                <.icon name="hero-computer-desktop" class="w-8 h-8" />
+            <div class="card-actions justify-start mt-4 pt-4 border-t border-base-200 dark:border-base-content/10">
+              <.link :if={project[:link_deploy] not in [nil, ""]} href={project.link_deploy} target="_blank" aria-label="Acessar Deploy" class="hover:text-primary transition-colors hover:scale-110">
+                <.icon name="hero-computer-desktop" class="w-7 h-7" />
               </.link>
 
-              <.link href={project.link_github} target="_blank" aria-label="Acessar código no GitHub">
-                <.github_icon class="w-8 h-8" />
+              <.link href={project.link_github} target="_blank" aria-label="Acessar código no GitHub" class="hover:text-primary transition-colors hover:scale-110">
+                <.github_icon class="w-7 h-7" />
               </.link>
             </div>
           </div>
@@ -149,11 +165,11 @@ defmodule PortifolioWeb.HomeLive do
       </div>
 
       <%= if length(@projects) > 3 do %>
-        <div>
+        <div class="mt-8">
           <button
             id="show-more-btn"
             phx-click={JS.remove_class("hidden", to: ".more-projects") |> JS.hide()}
-            class="btn btn-outline btn-primary rounded-full"
+            class="btn btn-outline btn-primary rounded-full px-8 shadow-md hover:shadow-lg"
           >
             Mostrar mais
           </button>
@@ -168,38 +184,99 @@ defmodule PortifolioWeb.HomeLive do
   """
   def research(assigns) do
     ~H"""
-      <section
-        class="flex flex-col items-center gap-8 p-4 md:my-16"
-        id="research"
-      >
-        <h2 class="text-4xl">Pesquisa</h2>
+    <section
+      class="flex flex-col items-center gap-8 p-4 md:m-8 md:my-16"
+      id="research"
+    >
+      <h2 class="text-4xl font-bold mb-8">Pesquisa</h2>
 
-        <div class="flex flex-col gap-4 p-4 rounded-lg shadow-lg hover:scale-105 transition border border-transparent dark:border-primary">
-          <h3 class="text-2xl">Iniciação científica</h3>
+      <!-- Grid com 2 colunas para alinhar IC e TCC lado a lado em telas maiores -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-7xl">
 
-          <p class="text-sm">Iniciação científica utilizando a linguagem funcional Elixir e o framework Phoenix.</p>
+        <!-- Card 1: Iniciação Científica -->
+        <div class="card bg-base-100 shadow-xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-base-200 dark:border-primary/30">
+          <figure>
+            <!-- Placeholder Imagem -->
+            <img
+              src="https://placehold.co/800x450/191e24/a6adc8?text=Iniciacao+Cientifica"
+              alt="Placeholder Iniciação Científica"
+              class="w-full aspect-video object-cover object-center border-b border-base-200 dark:border-primary/20"
+            />
+          </figure>
+
+          <div class="card-body p-6 flex flex-col gap-4">
+            <h3 class="card-title text-2xl">Iniciação Científica</h3>
+
+            <p class="text-sm text-base-content/80 flex-grow leading-relaxed">
+              Pesquisa voltada para o desenvolvimento de software utilizando a linguagem funcional Elixir e o framework Phoenix. Explorando conceitos de escalabilidade, concorrência e tolerância a falhas.
+            </p>
+
+            <!-- Badges opcionais para dar mais contexto -->
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span class="badge badge-primary badge-sm font-semibold">Elixir</span>
+              <span class="badge badge-primary badge-sm font-semibold">Phoenix</span>
+              <span class="badge badge-primary badge-sm font-semibold">TailwindCSS</span>
+              <span class="badge badge-primary badge-sm font-semibold">MySQL</span>
+              <span class="badge badge-primary badge-sm font-semibold">Playwright</span>
+              <span class="badge badge-primary badge-sm font-semibold">K6</span>
+            </div>
+          </div>
         </div>
-      </section>
+
+        <!-- Card 2: TCC -->
+        <div class="card bg-base-100 shadow-xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-base-200 dark:border-primary/30">
+          <figure>
+            <!-- Placeholder Imagem -->
+            <img
+              src="https://placehold.co/800x450/191e24/a6adc8?text=TCC+em+Breve"
+              alt="Placeholder TCC"
+              class="w-full aspect-video object-cover object-center border-b border-base-200 dark:border-primary/20"
+            />
+          </figure>
+
+          <div class="card-body p-6 flex flex-col gap-4">
+            <h3 class="card-title text-2xl">Trabalho de Conclusão de Curso</h3>
+
+            <p class="text-sm text-base-content/80 flex-grow leading-relaxed">
+              Projeto final de graduação em Ciência da Computação. O tema principal e os objetivos específicos da pesquisa estão atualmente em fase de planejamento e definição.
+            </p>
+
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span class="badge badge-outline badge-sm">Planejamento</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
     """
   end
 
   @doc """
-  Renderiza as tecnologias
+  Renderiza as tecnologias que domino e utilizo em meus projetos.
   """
   def technologies(assigns) do
     ~H"""
     <section
-      class="flex flex-col items-center gap-12 p-4 md:my-16"
+      class="flex flex-col items-center gap-8 p-4 md:my-16 w-full max-w-7xl mx-auto"
       id="technologies"
     >
-      <h2 class="text-4xl">Tecnologias</h2>
+      <h2 class="text-4xl font-bold mb-8">Tecnologias</h2>
 
       <ul
-        class="flex flex-wrap justify-center items-center gap-6"
+        class="flex flex-wrap justify-center items-center gap-8 md:gap-12"
         aria-label="Lista de tecnologias que utilizo"
       >
-        <li class="h-12 w-12" :for={technology <- @technologies}>
-          <img src={technology.image} class="w-full h-full object-contain" alt={technology.alt} />
+        <li :for={technology <- @technologies} class="group">
+          <div class="tooltip tooltip-primary" data-tip={technology.alt}>
+            <div class="h-12 w-12 md:h-16 md:w-16 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-2 cursor-pointer">
+              <img
+                src={technology.image}
+                class="w-full h-full object-contain"
+                alt={technology.alt}
+              />
+            </div>
+          </div>
         </li>
       </ul>
     </section>
@@ -211,36 +288,42 @@ defmodule PortifolioWeb.HomeLive do
   """
   def experiences(assigns) do
     ~H"""
-    <section class="flex flex-col gap-8 items-center md:m-8 md:my-16" id="experience">
-      <h2 class="text-4xl">Experiências</h2>
+    <section
+      class="flex flex-col gap-8 items-center md:m-8 md:my-16"
+      id="experiences"
+    >
+      <h2 class="text-4xl font-bold">Experiências</h2>
 
       <div class="w-full max-w-3xl p-4">
-        <!-- 1. A classe timeline-compact agora está sem o max-md: -->
         <ul class="timeline timeline-snap-icon timeline-compact timeline-vertical">
           <li :for={{experience, index} <- Enum.with_index(@experiences)}>
             <hr :if={index > 0} />
 
-            <!-- Ícone do meio -->
             <div class="timeline-middle text-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5" aria-hidden="true">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
               </svg>
             </div>
 
-            <!-- 2. Todo o conteúdo foi movido para o timeline-end (Lado Direito) -->
             <div class="timeline-end mb-10 ml-4 md:ml-6">
-              <!-- Data colocada no topo do bloco, com um block para quebrar a linha -->
-              <time class="font-mono text-sm text-gray-500 mb-1 block">
-                <%= experience.period %>
+              <time class="font-mono text-sm text-base-content/50 mb-1 block">
+                <%= experience.period %> &bull; <%= experience.location %>
               </time>
 
               <h3 class="text-xl font-bold"><%= experience.role %></h3>
 
-              <h4 class="text-lg font-medium text-gray-600 dark:text-gray-300 mb-3">
-                <%= experience.company %>
+              <h4 class="text-lg font-medium text-base-content/80 mb-3">
+                <.link
+                  href={experience.company_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 underline underline-offset-4 decoration-base-content/30 hover:text-primary hover:decoration-primary transition-colors duration-200"
+                >
+                  <%= experience.company %>
+                </.link>
               </h4>
 
-              <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+              <p class="text-sm text-base-content/70 mb-4 leading-relaxed">
                 <%= experience.description %>
               </p>
 
@@ -267,16 +350,23 @@ defmodule PortifolioWeb.HomeLive do
   """
   def certificates(assigns) do
     ~H"""
-    <section class="flex flex-col items-center gap-12 p-4 md:my-16" id="certificates">
-      <h2 class="text-4xl">Certificados</h2>
+    <section class="flex flex-col items-center gap-8 md:m-8 md:my-16 p-4" id="certificates">
+      <h2 class="text-4xl font-bold">Certificados</h2>
 
-      <ul aria-label="Lista de certificados que obtive">
-        <li class="text-sm hover:text-primary" :for={certificate <- @certificates}>
-          <.link href={certificate.link} target="_blank" alt={certificate.alt}>
-            {certificate.name}
-          </.link>
-        </li>
-      </ul>
+      <div class="w-full max-w-3xl">
+        <ul class="flex flex-col gap-3" aria-label="Lista de certificados que obtive">
+          <li :for={certificate <- @certificates}>
+            <.link
+              href={certificate.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block p-4 rounded-lg bg-base-200 hover:bg-base-300 hover:text-primary text-base font-medium transition-colors duration-200"
+            >
+              <%= certificate.name %>
+            </.link>
+          </li>
+        </ul>
+      </div>
     </section>
     """
   end
@@ -287,45 +377,45 @@ defmodule PortifolioWeb.HomeLive do
   def contacts(assigns) do
     ~H"""
     <section
-      class="flex flex-col items-center gap-12 p-4"
+      class="flex flex-col items-center gap-12 p-4 md:my-16"
       id="contacts"
     >
       <h2 class="text-4xl">Contatos</h2>
 
-      <ul class="flex flex-row items-center gap-6">
-        <li class="w-8 h-8 hover:text-primary">
-          <.link href="https://www.linkedin.com/in/ricardoof/" target="_blank" alt="LinkedIn">
-           <.linkedin_icon class="h-full w-full" />
+      <ul class="flex flex-row items-center gap-6" aria-label="Links para minhas redes sociais e contato">
+        <li class="w-8 h-8 hover:text-primary transition-colors duration-200">
+          <.link href="https://www.linkedin.com/in/ricardoof/" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
+           <.linkedin_icon class="h-full w-full" aria-hidden="true" />
           </.link>
         </li>
 
-        <li class="w-8 h-8 hover:text-primary">
-          <.link href="mailto:ricardoferreira4496@gmail.com" target="_blank" alt="Email">
+        <li class="w-8 h-8 hover:text-primary transition-colors duration-200">
+          <.link href="mailto:ricardoferreira4496@gmail.com" target="_blank" rel="noopener noreferrer" title="Email" aria-label="Email">
             <.icon name="hero-envelope" class="h-full w-full" />
           </.link>
         </li>
 
-        <li class="w-8 h-8 hover:text-primary">
-          <.link href="https://github.com/ricardoof" target="_blank" alt="GitHub">
-            <.github_icon class="h-full w-full" />
+        <li class="w-8 h-8 hover:text-primary transition-colors duration-200">
+          <.link href="https://github.com/ricardoof" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
+            <.github_icon class="h-full w-full" aria-hidden="true" />
           </.link>
         </li>
 
-        <li class="w-8 h-8 hover:text-primary">
-          <.link href="https://x.com/rricardoof" target="_blank" alt="Twitter">
-            <.twitter_icon class="h-full w-full" />
+        <li class="w-8 h-8 hover:text-primary transition-colors duration-200">
+          <.link href="https://x.com/rricardoof" target="_blank" rel="noopener noreferrer" title="X (Twitter)" aria-label="X (Twitter)">
+            <.twitter_icon class="h-full w-full" aria-hidden="true" />
           </.link>
         </li>
 
-        <li class="w-8 h-8 hover:text-primary">
-          <.link href="https://www.instagram.com/rricardoferreiraa" target="_blank" alt="Instagram">
-            <.instagram_icon class="h-full w-full" />
+        <li class="w-8 h-8 hover:text-primary transition-colors duration-200">
+          <.link href="https://www.instagram.com/rricardoferreiraa" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
+            <.instagram_icon class="h-full w-full" aria-hidden="true" />
           </.link>
         </li>
 
-        <li class="w-8 h-8 hover:text-primary">
-          <.link href="https://bsky.app/profile/ricardoof.bsky.social" target="_blank" alt="Bluesky">
-            <.bluesky_icon class="h-full w-full" />
+        <li class="w-8 h-8 hover:text-primary transition-colors duration-200">
+          <.link href="https://bsky.app/profile/ricardoof.bsky.social" target="_blank" rel="noopener noreferrer" title="Bluesky" aria-label="Bluesky">
+            <.bluesky_icon class="h-full w-full" aria-hidden="true" />
           </.link>
         </li>
       </ul>
@@ -398,8 +488,8 @@ defmodule PortifolioWeb.HomeLive do
   """
   def footer(assigns) do
     ~H"""
-    <footer>
-      <%= Date.utc_today().year %> Ricardo Ferreira
+    <footer class="w-full flex justify-center items-center p-8 mt-12 text-sm opacity-75">
+      <p>&copy; <%= Date.utc_today().year %> Ricardo Ferreira. Todos os direitos reservados.</p>
     </footer>
     """
   end
