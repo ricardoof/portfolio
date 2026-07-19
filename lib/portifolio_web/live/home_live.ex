@@ -25,7 +25,7 @@ defmodule PortifolioWeb.HomeLive do
   def header(assigns) do
     ~H"""
     <!-- Adicionado backdrop-blur e transparência no bg, além de uma borda inferior sutil -->
-    <header class="sticky top-0 z-50 bg-base-100">
+    <header class="sticky top-0 z-50 bg-base-100 border-b border-base-content/10">
       <nav class="flex items-center justify-between md:grid md:grid-cols-3 p-4 max-w-7xl mx-auto">
 
         <!-- 1. Fatia da Esquerda (Logo/Nome) -->
@@ -190,40 +190,9 @@ defmodule PortifolioWeb.HomeLive do
     >
       <h2 class="text-4xl font-bold mb-8">Pesquisa</h2>
 
-      <!-- Grid com 2 colunas para alinhar IC e TCC lado a lado em telas maiores -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-7xl">
 
-        <!-- Card 1: Iniciação Científica -->
-        <div class="card bg-base-100 shadow-xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-base-200 dark:border-primary/30">
-          <figure>
-            <!-- Placeholder Imagem -->
-            <img
-              src="https://placehold.co/800x450/191e24/a6adc8?text=Iniciacao+Cientifica"
-              alt="Placeholder Iniciação Científica"
-              class="w-full aspect-video object-cover object-center border-b border-base-200 dark:border-primary/20"
-            />
-          </figure>
-
-          <div class="card-body p-6 flex flex-col gap-4">
-            <h3 class="card-title text-2xl">Iniciação Científica</h3>
-
-            <p class="text-sm text-base-content/80 flex-grow leading-relaxed">
-              Pesquisa voltada para o desenvolvimento de software utilizando a linguagem funcional Elixir e o framework Phoenix. Explorando conceitos de escalabilidade, concorrência e tolerância a falhas.
-            </p>
-
-            <!-- Badges opcionais para dar mais contexto -->
-            <div class="flex flex-wrap gap-2 mt-2">
-              <span class="badge badge-primary badge-sm font-semibold">Elixir</span>
-              <span class="badge badge-primary badge-sm font-semibold">Phoenix</span>
-              <span class="badge badge-primary badge-sm font-semibold">TailwindCSS</span>
-              <span class="badge badge-primary badge-sm font-semibold">MySQL</span>
-              <span class="badge badge-primary badge-sm font-semibold">Playwright</span>
-              <span class="badge badge-primary badge-sm font-semibold">K6</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 2: TCC -->
+        <!-- Card 1: TCC -->
         <div class="card bg-base-100 shadow-xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-base-200 dark:border-primary/30">
           <figure>
             <!-- Placeholder Imagem -->
@@ -247,6 +216,34 @@ defmodule PortifolioWeb.HomeLive do
           </div>
         </div>
 
+        <!-- Card 2: Iniciação Científica -->
+        <div class="card bg-base-100 shadow-xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-base-200 dark:border-primary/30">
+          <figure>
+            <!-- Placeholder Imagem -->
+            <img
+              src="https://placehold.co/800x450/191e24/a6adc8?text=Iniciacao+Cientifica"
+              alt="Placeholder Iniciação Científica"
+              class="w-full aspect-video object-cover object-center border-b border-base-200 dark:border-primary/20"
+            />
+          </figure>
+
+          <div class="card-body p-6 flex flex-col gap-4">
+            <h3 class="card-title text-2xl">Iniciação Científica</h3>
+
+            <p class="text-sm text-base-content/80 flex-grow leading-relaxed">
+              Pesquisa voltada para o desenvolvimento de software utilizando a linguagem funcional Elixir e o framework Phoenix. Explorando conceitos de escalabilidade, concorrência e tolerância a falhas.
+            </p>
+
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span class="badge badge-primary badge-sm font-semibold">Elixir</span>
+              <span class="badge badge-primary badge-sm font-semibold">Phoenix</span>
+              <span class="badge badge-primary badge-sm font-semibold">TailwindCSS</span>
+              <span class="badge badge-primary badge-sm font-semibold">MySQL</span>
+              <span class="badge badge-primary badge-sm font-semibold">Playwright</span>
+              <span class="badge badge-primary badge-sm font-semibold">K6</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     """
@@ -488,7 +485,7 @@ defmodule PortifolioWeb.HomeLive do
   """
   def footer(assigns) do
     ~H"""
-    <footer class="w-full flex justify-center items-center p-8 mt-12 text-sm opacity-75">
+    <footer class="w-full flex justify-center items-center p-8 text-sm opacity-75 border-t border-base-content/10">
       <p>&copy; <%= Date.utc_today().year %> Ricardo Ferreira. Todos os direitos reservados.</p>
     </footer>
     """
