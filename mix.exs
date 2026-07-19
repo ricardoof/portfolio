@@ -1,9 +1,9 @@
-defmodule Portifolio.MixProject do
+defmodule Portfolio.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :portifolio,
+      app: :portfolio,
       version: "0.1.0",
       elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -20,7 +20,7 @@ defmodule Portifolio.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Portifolio.Application, []},
+      mod: {Portfolio.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -76,10 +76,10 @@ defmodule Portifolio.MixProject do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["compile", "tailwind portifolio", "esbuild portifolio"],
+      "assets.build": ["compile", "tailwind portfolio", "esbuild portfolio"],
       "assets.deploy": [
-        "tailwind portifolio --minify",
-        "esbuild portifolio --minify",
+        "tailwind portfolio --minify",
+        "esbuild portfolio --minify",
         "phx.digest"
       ],
       precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"]

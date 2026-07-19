@@ -1,6 +1,6 @@
-# Portifolio
+# Portfolio
 
-Portifólio com seções de sobre, projetos, pesquisa, tecnologias, certificados e contatos.
+Portfólio com seções de sobre, projetos, pesquisa, tecnologias, certificados e contatos.
 
 
 ## Tecnologias

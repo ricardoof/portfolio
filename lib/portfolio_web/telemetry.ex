@@ -1,4 +1,4 @@
-defmodule PortifolioWeb.Telemetry do
+defmodule PortfolioWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -64,7 +64,7 @@ defmodule PortifolioWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {PortifolioWeb, :count_users, []}
+      # {PortfolioWeb, :count_users, []}
     ]
   end
 end

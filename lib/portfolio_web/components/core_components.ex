@@ -1,4 +1,4 @@
-defmodule PortifolioWeb.CoreComponents do
+defmodule PortfolioWeb.CoreComponents do
   @moduledoc """
   Provides core UI components.
 
@@ -27,7 +27,7 @@ defmodule PortifolioWeb.CoreComponents do
 
   """
   use Phoenix.Component
-  use Gettext, backend: PortifolioWeb.Gettext
+  use Gettext, backend: PortfolioWeb.Gettext
 
   alias Phoenix.LiveView.JS
 
@@ -483,9 +483,9 @@ defmodule PortifolioWeb.CoreComponents do
     # with our gettext backend as first argument. Translations are
     # available in the errors.po file (as we use the "errors" domain).
     if count = opts[:count] do
-      Gettext.dngettext(PortifolioWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(PortfolioWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(PortifolioWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(PortfolioWeb.Gettext, "errors", msg, opts)
     end
   end
 

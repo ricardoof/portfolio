@@ -1,5 +1,5 @@
-defmodule Portifolio.Certificates do
-  
+defmodule Portfolio.Certificates do
+
   def list_certificates do
     [
       %{

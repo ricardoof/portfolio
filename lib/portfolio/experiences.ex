@@ -1,4 +1,4 @@
-defmodule Portifolio.Experiences do
+defmodule Portfolio.Experiences do
 
   def list_experiences do
     [

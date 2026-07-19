@@ -1,4 +1,4 @@
-defmodule Portifolio.Projects do
+defmodule Portfolio.Projects do
 
   @doc """
   Lista de projetos.

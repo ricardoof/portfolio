@@ -1,2 +1,2 @@
 set PHX_SERVER=true
-call "%~dp0\portifolio" start
+call "%~dp0\portfolio" start

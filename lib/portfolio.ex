@@ -1,6 +1,6 @@
-defmodule Portifolio do
+defmodule Portfolio do
   @moduledoc """
-  Portifolio keeps the contexts that define your domain
+  Portfolio keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

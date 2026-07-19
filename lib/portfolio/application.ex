@@ -1,4 +1,4 @@
-defmodule Portifolio.Application do
+defmodule Portfolio.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -8,18 +8,18 @@ defmodule Portifolio.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      PortifolioWeb.Telemetry,
-      {DNSCluster, query: Application.get_env(:portifolio, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: Portifolio.PubSub},
-      # Start a worker by calling: Portifolio.Worker.start_link(arg)
-      # {Portifolio.Worker, arg},
+      PortfolioWeb.Telemetry,
+      {DNSCluster, query: Application.get_env(:portfolio, :dns_cluster_query) || :ignore},
+      {Phoenix.PubSub, name: Portfolio.PubSub},
+      # Start a worker by calling: Portfolio.Worker.start_link(arg)
+      # {Portfolio.Worker, arg},
       # Start to serve requests, typically the last entry
-      PortifolioWeb.Endpoint
+      PortfolioWeb.Endpoint
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Portifolio.Supervisor]
+    opts = [strategy: :one_for_one, name: Portfolio.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
@@ -27,7 +27,7 @@ defmodule Portifolio.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    PortifolioWeb.Endpoint.config_change(changed, removed)
+    PortfolioWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

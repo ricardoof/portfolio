@@ -1,12 +1,12 @@
-defmodule PortifolioWeb do
+defmodule PortfolioWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use PortifolioWeb, :controller
-      use PortifolioWeb, :html
+      use PortfolioWeb, :controller
+      use PortfolioWeb, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -40,7 +40,7 @@ defmodule PortifolioWeb do
     quote do
       use Phoenix.Controller, formats: [:html, :json]
 
-      use Gettext, backend: PortifolioWeb.Gettext
+      use Gettext, backend: PortfolioWeb.Gettext
 
       import Plug.Conn
 
@@ -80,16 +80,16 @@ defmodule PortifolioWeb do
   defp html_helpers do
     quote do
       # Translation
-      use Gettext, backend: PortifolioWeb.Gettext
+      use Gettext, backend: PortfolioWeb.Gettext
 
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components
-      import PortifolioWeb.CoreComponents
+      import PortfolioWeb.CoreComponents
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS
-      alias PortifolioWeb.Layouts
+      alias PortfolioWeb.Layouts
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())
@@ -99,9 +99,9 @@ defmodule PortifolioWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: PortifolioWeb.Endpoint,
-        router: PortifolioWeb.Router,
-        statics: PortifolioWeb.static_paths()
+        endpoint: PortfolioWeb.Endpoint,
+        router: PortfolioWeb.Router,
+        statics: PortfolioWeb.static_paths()
     end
   end
 

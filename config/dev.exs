@@ -6,7 +6,7 @@ import Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we can use it
 # to bundle .js and .css sources.
-config :portifolio, PortifolioWeb.Endpoint,
+config :portfolio, PortfolioWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}],
@@ -15,8 +15,8 @@ config :portifolio, PortifolioWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "wrhih0k6tThnPuB1LdV0nYTbjALR0pgUqZ09w0EG58yDFDFH8h8hw3Sc0amQ9W8e",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:portifolio, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:portifolio, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:portfolio, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:portfolio, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -43,7 +43,7 @@ config :portifolio, PortifolioWeb.Endpoint,
 # different ports.
 
 # Reload browser tabs when matching files change.
-config :portifolio, PortifolioWeb.Endpoint,
+config :portfolio, PortfolioWeb.Endpoint,
   live_reload: [
     web_console_logger: true,
     patterns: [
@@ -52,13 +52,13 @@ config :portifolio, PortifolioWeb.Endpoint,
       # Gettext translations
       ~r"priv/gettext/.*\.po$",
       # Router, Controllers, LiveViews and LiveComponents
-      ~r"lib/portifolio_web/router\.ex$",
-      ~r"lib/portifolio_web/(controllers|live|components)/.*\.(ex|heex)$"
+      ~r"lib/portfolio_web/router\.ex$",
+      ~r"lib/portfolio_web/(controllers|live|components)/.*\.(ex|heex)$"
     ]
   ]
 
 # Enable dev routes for dashboard and mailbox
-config :portifolio, dev_routes: true
+config :portfolio, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :default_formatter, format: "[$level] $message\n"

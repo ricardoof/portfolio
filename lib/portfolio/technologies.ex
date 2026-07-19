@@ -1,4 +1,4 @@
-defmodule Portifolio.Technologies do
+defmodule Portfolio.Technologies do
 
   def list_technologies do
     [

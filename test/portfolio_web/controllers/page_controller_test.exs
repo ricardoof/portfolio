@@ -1,5 +1,5 @@
-defmodule PortifolioWeb.PageControllerTest do
-  use PortifolioWeb.ConnCase
+defmodule PortfolioWeb.PageControllerTest do
+  use PortfolioWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")

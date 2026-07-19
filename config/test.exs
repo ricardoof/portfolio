@@ -2,13 +2,13 @@ import Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :portifolio, PortifolioWeb.Endpoint,
+config :portfolio, PortfolioWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "FJc26AbbX9F/1uSivEf9VmoNWgoSfByR9C6/vlmPMyPtzBGOm/FLL+CiGGil0k75",
   server: false
 
 # In test we don't send emails
-config :portifolio, Portifolio.Mailer, adapter: Swoosh.Adapters.Test
+config :portfolio, Portfolio.Mailer, adapter: Swoosh.Adapters.Test
 
 # Disable swoosh api client as it is only required for production adapters
 config :swoosh, :api_client, false

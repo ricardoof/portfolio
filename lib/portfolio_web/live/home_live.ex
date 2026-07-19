@@ -1,11 +1,11 @@
-defmodule PortifolioWeb.HomeLive do
-  use PortifolioWeb, :live_view
+defmodule PortfolioWeb.HomeLive do
+  use PortfolioWeb, :live_view
 
-  import PortifolioWeb.CoreComponents
+  import PortfolioWeb.CoreComponents
 
-  alias Portifolio.{Projects, Technologies, Experiences, Certificates}
+  alias Portfolio.{Projects, Technologies, Experiences, Certificates}
   alias Phoenix.LiveView.JS
-  alias PortifolioWeb.Layouts
+  alias PortfolioWeb.Layouts
 
   @doc"""
   Prepara a home com os projetos.
@@ -485,7 +485,7 @@ defmodule PortifolioWeb.HomeLive do
   """
   def footer(assigns) do
     ~H"""
-    <footer class="w-full flex justify-center items-center p-8 text-sm opacity-75 border-t border-base-content/10">
+    <footer class="w-full flex justify-center items-center p-8 mt-16 text-sm opacity-75 border-t border-base-content/10">
       <p>&copy; <%= Date.utc_today().year %> Ricardo Ferreira. Todos os direitos reservados.</p>
     </footer>
     """
