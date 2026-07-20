@@ -3,7 +3,7 @@ defmodule PortfolioWeb.HomeLive do
 
   import PortfolioWeb.CoreComponents
 
-  alias Portfolio.{Projects, Technologies, Experiences, Certificates}
+  alias Portfolio.{Projects, Technologies, Experience, Certificates}
   alias Phoenix.LiveView.JS
   alias PortfolioWeb.Layouts
 
@@ -14,38 +14,36 @@ defmodule PortfolioWeb.HomeLive do
     {:ok, assign(socket,
       projects: Projects.list_projects(),
       technologies: Technologies.list_technologies(),
-      experiences: Experiences.list_experiences(),
+      experiences: Experience.list_experiences(),
       certificates: Certificates.list_certificates())
     }
   end
 
   @doc """
-  Renderiza o header para mobile e desktop
+  Renders the header for both mobile and desktop.
   """
   def header(assigns) do
     ~H"""
-    <!-- Adicionado backdrop-blur e transparência no bg, além de uma borda inferior sutil -->
     <header class="sticky top-0 z-50 bg-base-100 border-b border-base-content/10">
       <nav class="flex items-center justify-between md:grid md:grid-cols-3 p-4 max-w-7xl mx-auto">
 
-        <!-- 1. Fatia da Esquerda (Logo/Nome) -->
+        <!-- 1. Left Section (Logo/Name) -->
         <div class="font-bold text-2xl text-base-content md:justify-self-start">
           Ricardo Ferreira
         </div>
 
-        <!-- 2. Fatia do Centro (Menu Desktop) -->
-        <!-- Removida a borda primária (border border-primary rounded-full py-2 px-4) para um visual mais limpo -->
+        <!-- 2. Center Section (Desktop Menu) -->
         <ul class="hidden gap-8 font-medium border border-primary/50 rounded-full py-2 px-6 md:justify-self-center md:flex">
-          <li><a href="#about" class="hover:text-primary transition-colors duration-200">Sobre</a></li>
-          <li><a href="#projects" class="hover:text-primary transition-colors duration-200">Projetos</a></li>
-          <li><a href="#research" class="hover:text-primary transition-colors duration-200">Pesquisa</a></li>
-          <li><a href="#technologies" class="hover:text-primary transition-colors duration-200">Tecnologias</a></li>
-          <li><a href="#experiences" class="hover:text-primary transition-colors duration-200">Experiências</a></li>
-          <li><a href="#certificates" class="hover:text-primary transition-colors duration-200">Certificados</a></li>
-          <li><a href="#contacts" class="hover:text-primary transition-colors duration-200">Contatos</a></li>
+          <li><a href="#about" class="hover:text-primary transition-colors duration-200">About</a></li>
+          <li><a href="#projects" class="hover:text-primary transition-colors duration-200">Projects</a></li>
+          <li><a href="#research" class="hover:text-primary transition-colors duration-200">Research</a></li>
+          <li><a href="#technologies" class="hover:text-primary transition-colors duration-200">Technologies</a></li>
+          <li><a href="#experience" class="hover:text-primary transition-colors duration-200">Experience</a></li>
+          <li><a href="#certificates" class="hover:text-primary transition-colors duration-200">Certificates</a></li>
+          <li><a href="#contact" class="hover:text-primary transition-colors duration-200">Contact</a></li>
         </ul>
 
-        <!-- 3. Fatia da Direita (Dark Mode + Sanduíche via Dropdown) -->
+        <!-- 3. Right Section (Dark Mode + Hamburger Menu via Dropdown) -->
         <div class="flex items-center gap-2 md:justify-self-end">
           <Layouts.theme_toggle />
 
@@ -54,24 +52,23 @@ defmodule PortfolioWeb.HomeLive do
               tabindex="0"
               role="button"
               class="btn btn-ghost btn-circle focus:outline-none"
-              aria-label="Abrir menu"
+              aria-label="Open menu"
             >
               <.icon name="hero-bars-3" class="w-8 h-8" />
             </div>
 
-            <!-- Menu Mobile (Caixa Flutuante) -->
-            <!-- Adicionado border/ring sutil para destacar do fundo escuro -->
+            <!-- Mobile Menu (Floating Box) -->
             <ul
               tabindex="0"
               class="menu dropdown-content mt-3 z-[1] p-4 shadow-2xl bg-base-200 rounded-box w-72 text-lg font-medium gap-2 border border-base-300"
             >
-              <li><a href="#about" onclick="this.blur()" class="hover:text-primary py-3">Sobre</a></li>
-              <li><a href="#projects" onclick="this.blur()" class="hover:text-primary py-3">Projetos</a></li>
-              <li><a href="#research" onclick="this.blur()" class="hover:text-primary py-3">Pesquisa</a></li>
-              <li><a href="#technologies" onclick="this.blur()" class="hover:text-primary py-3">Tecnologias</a></li>
-              <li><a href="#experiences" onclick="this.blur()" class="hover:text-primary py-3">Experiências</a></li>
-              <li><a href="#certificates" onclick="this.blur()" class="hover:text-primary py-3">Certificados</a></li>
-              <li><a href="#contacts" onclick="this.blur()" class="hover:text-primary py-3">Contatos</a></li>
+              <li><a href="#about" onclick="this.blur()" class="hover:text-primary py-3">About</a></li>
+              <li><a href="#projects" onclick="this.blur()" class="hover:text-primary py-3">Projects</a></li>
+              <li><a href="#research" onclick="this.blur()" class="hover:text-primary py-3">Research</a></li>
+              <li><a href="#technologies" onclick="this.blur()" class="hover:text-primary py-3">Technologies</a></li>
+              <li><a href="#experience" onclick="this.blur()" class="hover:text-primary py-3">Experience</a></li>
+              <li><a href="#certificates" onclick="this.blur()" class="hover:text-primary py-3">Certificates</a></li>
+              <li><a href="#contact" onclick="this.blur()" class="hover:text-primary py-3">Contact</a></li>
             </ul>
           </div>
         </div>
@@ -81,7 +78,7 @@ defmodule PortfolioWeb.HomeLive do
   end
 
   @doc """
-  Renderiza a seção "Sobre"
+  Renders the "About" section
   """
   def about(assigns) do
     ~H"""
@@ -91,25 +88,25 @@ defmodule PortfolioWeb.HomeLive do
           <div class="w-48 md:w-80 rounded-full">
             <img
               src="https://github.com/ricardoof.png"
-              alt="Foto de Ricardo Ferreira"
+              alt="Photo of Ricardo Ferreira"
             />
           </div>
         </div>
       </div>
 
       <div class="flex flex-col gap-4 text-center md:text-left">
-        <h1 class="text-4xl font-bold">Olá, meu nome é Ricardo Ferreira</h1>
+        <h1 class="text-4xl font-bold">Hello, my name is Ricardo Ferreira</h1>
 
-        <p>Sou estudante de Ciência da Computação na UFV (8º período) e Desenvolvedor Full Stack, apaixonado por criar softwares eficientes e escaláveis.
-        Atualmente, meu grande foco é o ecossistema funcional, utilizando a linguagem de programação funcional <span class="text-primary font-semibold">Elixir</span>
-        e o framework <span class="text-primary font-semibold">Phoenix</span> para escalabilidade e concorrência.</p>
+        <p>I am a Computer Science student at UFV (8th term) and a Full Stack Developer, passionate about creating efficient and scalable software.
+        Currently, my main focus is the functional ecosystem, using the functional programming language <span class="text-primary font-semibold">Elixir</span>
+        and the <span class="text-primary font-semibold">Phoenix</span> framework for scalability and concurrency.</p>
       </div>
     </section>
     """
   end
 
   @doc """
-  Renderiza meus projetos.
+  Renders my projects.
   """
   def projects(assigns) do
     ~H"""
@@ -117,7 +114,7 @@ defmodule PortfolioWeb.HomeLive do
       class="flex flex-col gap-4 items-center md:m-8 md:my-16"
       id="projects"
     >
-      <h2 class="text-4xl font-bold mb-8">Projetos</h2>
+      <h2 class="text-4xl font-bold mb-8">Projects</h2>
 
       <div class="grid grid-cols-1 gap-8 p-4 md:grid-cols-3 md:m-8 w-full max-w-7xl">
         <div
@@ -152,11 +149,11 @@ defmodule PortfolioWeb.HomeLive do
             </div>
 
             <div class="card-actions justify-start mt-4 pt-4 border-t border-base-200 dark:border-base-content/10">
-              <.link :if={project[:link_deploy] not in [nil, ""]} href={project.link_deploy} target="_blank" aria-label="Acessar Deploy" class="hover:text-primary transition-colors hover:scale-110">
+              <.link :if={project[:link_deploy] not in [nil, ""]} href={project.link_deploy} target="_blank" aria-label="Visit live site" class="hover:text-primary transition-colors hover:scale-110">
                 <.icon name="hero-computer-desktop" class="w-7 h-7" />
               </.link>
 
-              <.link href={project.link_github} target="_blank" aria-label="Acessar código no GitHub" class="hover:text-primary transition-colors hover:scale-110">
+              <.link href={project.link_github} target="_blank" aria-label="View code on GitHub" class="hover:text-primary transition-colors hover:scale-110">
                 <.github_icon class="w-7 h-7" />
               </.link>
             </div>
@@ -171,7 +168,7 @@ defmodule PortfolioWeb.HomeLive do
             phx-click={JS.remove_class("hidden", to: ".more-projects") |> JS.hide()}
             class="btn btn-outline btn-primary rounded-full px-8 shadow-md hover:shadow-lg"
           >
-            Mostrar mais
+            Show more
           </button>
         </div>
       <% end %>
@@ -180,7 +177,7 @@ defmodule PortfolioWeb.HomeLive do
   end
 
   @doc """
-  Renderiza a seção de pesquisa.
+  Renders the research section.
   """
   def research(assigns) do
     ~H"""
@@ -188,50 +185,50 @@ defmodule PortfolioWeb.HomeLive do
       class="flex flex-col items-center gap-8 p-4 md:m-8 md:my-16"
       id="research"
     >
-      <h2 class="text-4xl font-bold mb-8">Pesquisa</h2>
+      <h2 class="text-4xl font-bold mb-8">Research</h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-7xl">
 
-        <!-- Card 1: TCC -->
+        <!-- Card 1: Undergraduate Thesis -->
         <div class="card bg-base-100 shadow-xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-base-200 dark:border-primary/30">
           <figure>
-            <!-- Placeholder Imagem -->
+            <!-- Placeholder Image -->
             <img
-              src="https://placehold.co/800x450/191e24/a6adc8?text=TCC+em+Breve"
-              alt="Placeholder TCC"
+              src="https://placehold.co/800x450/191e24/a6adc8?text=Thesis+Coming+Soon"
+              alt="Undergraduate Thesis Placeholder"
               class="w-full aspect-video object-cover object-center border-b border-base-200 dark:border-primary/20"
             />
           </figure>
 
           <div class="card-body p-6 flex flex-col gap-4">
-            <h3 class="card-title text-2xl">Trabalho de Conclusão de Curso</h3>
+            <h3 class="card-title text-2xl">Undergraduate Thesis</h3>
 
             <p class="text-sm text-base-content/80 flex-grow leading-relaxed">
-              Projeto final de graduação em Ciência da Computação. O tema principal e os objetivos específicos da pesquisa estão atualmente em fase de planejamento e definição.
+              Final undergraduate project in Computer Science. The main topic and specific research objectives are currently in the planning and definition phase.
             </p>
 
             <div class="flex flex-wrap gap-2 mt-2">
-              <span class="badge badge-outline badge-sm">Planejamento</span>
+              <span class="badge badge-outline badge-sm">Planning</span>
             </div>
           </div>
         </div>
 
-        <!-- Card 2: Iniciação Científica -->
+        <!-- Card 2: Undergraduate Research -->
         <div class="card bg-base-100 shadow-xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-base-200 dark:border-primary/30">
           <figure>
-            <!-- Placeholder Imagem -->
+            <!-- Placeholder Image -->
             <img
-              src="https://placehold.co/800x450/191e24/a6adc8?text=Iniciacao+Cientifica"
-              alt="Placeholder Iniciação Científica"
+              src="https://placehold.co/800x450/191e24/a6adc8?text=Undergraduate+Research"
+              alt="Undergraduate Research Placeholder"
               class="w-full aspect-video object-cover object-center border-b border-base-200 dark:border-primary/20"
             />
           </figure>
 
           <div class="card-body p-6 flex flex-col gap-4">
-            <h3 class="card-title text-2xl">Iniciação Científica</h3>
+            <h3 class="card-title text-2xl">Undergraduate Research</h3>
 
             <p class="text-sm text-base-content/80 flex-grow leading-relaxed">
-              Pesquisa voltada para o desenvolvimento de software utilizando a linguagem funcional Elixir e o framework Phoenix. Explorando conceitos de escalabilidade, concorrência e tolerância a falhas.
+              Research focused on software development using the Elixir functional language and the Phoenix framework. Exploring concepts of scalability, concurrency, and fault tolerance.
             </p>
 
             <div class="flex flex-wrap gap-2 mt-2">
@@ -250,7 +247,7 @@ defmodule PortfolioWeb.HomeLive do
   end
 
   @doc """
-  Renderiza as tecnologias que domino e utilizo em meus projetos.
+  Renders the technologies I use in my projects.
   """
   def technologies(assigns) do
     ~H"""
@@ -258,11 +255,11 @@ defmodule PortfolioWeb.HomeLive do
       class="flex flex-col items-center gap-8 p-4 md:my-16 w-full max-w-7xl mx-auto"
       id="technologies"
     >
-      <h2 class="text-4xl font-bold mb-8">Tecnologias</h2>
+      <h2 class="text-4xl font-bold mb-8">Technologies</h2>
 
       <ul
         class="flex flex-wrap justify-center items-center gap-8 md:gap-12"
-        aria-label="Lista de tecnologias que utilizo"
+        aria-label="List of technologies I use"
       >
         <li :for={technology <- @technologies} class="group">
           <div class="tooltip tooltip-primary" data-tip={technology.alt}>
@@ -281,15 +278,15 @@ defmodule PortfolioWeb.HomeLive do
   end
 
   @doc """
-  Renderiza as minhas experiências profissionais.
+  Renders my professional experiences.
   """
-  def experiences(assigns) do
+  def experience(assigns) do
     ~H"""
     <section
       class="flex flex-col gap-8 items-center md:m-8 md:my-16"
-      id="experiences"
+      id="experience"
     >
-      <h2 class="text-4xl font-bold">Experiências</h2>
+      <h2 class="text-4xl font-bold">Experience</h2>
 
       <div class="w-full max-w-3xl p-4">
         <ul class="timeline timeline-snap-icon timeline-compact timeline-vertical">
@@ -343,15 +340,15 @@ defmodule PortfolioWeb.HomeLive do
   end
 
   @doc """
-  Renderiza meus certificados
+  Renders my certificates.
   """
   def certificates(assigns) do
     ~H"""
     <section class="flex flex-col items-center gap-8 md:m-8 md:my-16 p-4" id="certificates">
-      <h2 class="text-4xl font-bold">Certificados</h2>
+      <h2 class="text-4xl font-bold">Certificates</h2>
 
       <div class="w-full max-w-3xl">
-        <ul class="flex flex-col gap-3" aria-label="Lista de certificados que obtive">
+        <ul class="flex flex-col gap-3" aria-label="List of my certificates">
           <li :for={certificate <- @certificates}>
             <.link
               href={certificate.link}
@@ -369,20 +366,20 @@ defmodule PortfolioWeb.HomeLive do
   end
 
   @doc """
-  Renderiza os contatos
+  Renders the contacts.
   """
-  def contacts(assigns) do
+  def contact(assigns) do
     ~H"""
     <section
       class="flex flex-col items-center gap-12 p-4 md:my-16"
-      id="contacts"
+      id="contact"
     >
-      <h2 class="text-4xl">Contatos</h2>
+      <h2 class="text-4xl">Contact</h2>
 
-      <ul class="flex flex-row items-center gap-6" aria-label="Links para minhas redes sociais e contato">
+      <ul class="flex flex-row items-center gap-6" aria-label="Links to my social media and contact">
         <li class="w-8 h-8 hover:text-primary transition-colors duration-200">
           <.link href="https://www.linkedin.com/in/ricardoof/" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
-           <.linkedin_icon class="h-full w-full" aria-hidden="true" />
+            <.linkedin_icon class="h-full w-full" aria-hidden="true" />
           </.link>
         </li>
 
@@ -481,12 +478,12 @@ defmodule PortfolioWeb.HomeLive do
   end
 
   @doc """
-  Renderiza o footer
+  Renders the footer.
   """
   def footer(assigns) do
     ~H"""
     <footer class="w-full flex justify-center items-center p-8 mt-16 text-sm opacity-75 border-t border-base-content/10">
-      <p>&copy; <%= Date.utc_today().year %> Ricardo Ferreira. Todos os direitos reservados.</p>
+      <p>&copy; <%= Date.utc_today().year %> Ricardo Ferreira. All rights reserved.</p>
     </footer>
     """
   end

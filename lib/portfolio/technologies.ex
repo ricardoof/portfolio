@@ -1,5 +1,8 @@
 defmodule Portfolio.Technologies do
 
+  @doc """
+  List of technologies.
+  """
   def list_technologies do
     [
       %{
